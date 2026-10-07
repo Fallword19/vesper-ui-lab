@@ -80,7 +80,7 @@
 
   /* ---------- 身份卡：名字 + 轨道 ---------- */
   .identity { display: flex; flex-direction: column; }
-  .identity .who { margin-top: 52px; }
+  .identity .who { margin-top: 52px; justify-content: flex-end; }
   .identity .who {
     display: flex;
     align-items: center;
@@ -91,8 +91,8 @@
     letter-spacing: -1px;
     line-height: 1;
   }
-  .identity .who::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
-  .name-edit { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+  .identity .who::before { order: 2; align-self: flex-end; margin: 0 0 8px -6px; content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+  .name-edit { align-self: flex-end; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
   .model-pick {
     display: inline-flex;
     align-items: center;
@@ -107,7 +107,7 @@
   .model-pick em { font-weight: 400; }
   .model-pick em { font-style: normal; color: var(--muted); }
   .model-pick svg { color: var(--muted); }
-  .orbit { position: absolute; right: -18px; top: 0; width: 170px; height: 170px; pointer-events: none; }
+  .orbit { position: absolute; left: -18px; transform: scaleX(-1); top: 0; width: 170px; height: 170px; pointer-events: none; }
 
   /* ---------- 思考卡：思维波 ---------- */
   .wave-wrap { position: relative; height: 96px; margin: 10px 8px 6px 0; }
@@ -149,10 +149,11 @@
   }
   .facet { position: relative; display: flex; flex-direction: column; min-height: 142px; padding: 18px 16px 18px 0; }
   .facet + .facet { padding: 18px 0 18px 18px; border-left: 1px solid var(--line); }
-  .facet-tag { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 10.5px; line-height: 1.7; letter-spacing: 1.5px; color: var(--muted); }
-  .facet-head { order: 2; margin-top: auto; display: flex; align-items: center; gap: 6px; font-size: 21px; font-weight: 500; letter-spacing: .5px; }
+  .facet-tag { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 10.5px; line-height: 1.7; letter-spacing: 1.5px; color: var(--muted); text-align: right; margin-right: -1.5px; }
+  .facet-head { order: 2; margin-top: auto; display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-size: 21px; font-weight: 500; letter-spacing: .5px; }
   .facet .go { color: var(--faint); transform: translateY(1px); }
-  .facet .art { position: absolute; right: 0; top: 14px; width: 80px; height: 80px; }
+  .facet .art { position: absolute; left: 0; top: 14px; width: 80px; height: 80px; }
+  .facet + .facet .art { left: 18px; }
   .persona { transform-origin: 37px 37px; animation: unfold 1.1s cubic-bezier(.3, .7, .2, 1) .2s both; }
   @keyframes unfold { from { transform: scale(0) rotate(-30deg); opacity: 0; } }
 
