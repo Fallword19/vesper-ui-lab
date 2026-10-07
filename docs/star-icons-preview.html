@@ -1,0 +1,148 @@
+<title>Vesper 底栏图标</title>
+<style>
+/* 布局：一句概念 → 三种画法切换 → 白天 / 夜里两块底栏预览 → 放大看四个图标 */
+:root{
+  --bg:#F4F4F4;
+  --surface:#FFFFFF;
+  --pill:#F2F2F4;
+  --ink:#1C1C1E;
+  --muted:#6C6C70;
+  --line:#E5E5EA;
+  --acc:#C9963F;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#000000;--surface:#1C1C1E;--pill:#2C2C2E;--ink:#F2F2F4;--muted:#98989F;--line:#2C2C2E;--acc:#E2B77C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000000;--surface:#1C1C1E;--pill:#2C2C2E;--ink:#F2F2F4;--muted:#98989F;--line:#2C2C2E;--acc:#E2B77C;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;padding-inline:16px}
+.wrap{max-width:420px;margin:0 auto;padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.sub{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.6}
+
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:14px;background:var(--surface)}
+.seg button{min-height:40px;border:0;border-radius:10px;background:transparent;color:var(--muted);font:inherit;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--pill);color:var(--ink);font-weight:600}
+.how{margin:-6px 0 0;font-size:13px;color:var(--muted);line-height:1.6;min-height:42px}
+
+/* 两块预览各自固定配色 */
+.screen{position:relative;height:190px;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:14px;background:var(--s-bg);color:var(--s-ink)}
+.screen .page{position:absolute;top:20px;left:22px;font-size:26px;font-weight:700;letter-spacing:-.02em}
+.screen .when{position:absolute;top:26px;right:22px;font-size:12px;color:var(--s-idle)}
+.day{--s-bg:#F7F7F8;--s-bar:#FFFFFF;--s-pill:#F2F2F4;--s-ink:#1C1C1E;--s-idle:#9C9CA1;--s-acc:#C9963F;--s-sh:0 6px 18px rgba(0,0,0,.06);box-shadow:0 0 0 .5px #E5E5EA}
+.night{--s-bg:#0E0E10;--s-bar:#1C1C1E;--s-pill:#2C2C2E;--s-ink:#F2F2F4;--s-idle:#7C7C82;--s-acc:#E2B77C;--s-sh:0 6px 18px rgba(0,0,0,.5)}
+.bar{margin:0 20px;padding:6px;display:flex;gap:4px;background:var(--s-bar);border-radius:999px;box-shadow:var(--s-sh)}
+.tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;border:0;border-radius:999px;background:transparent;color:var(--s-idle);font:inherit;cursor:pointer;transition:background .25s,color .25s;--hole:var(--s-bar);--acc:var(--s-acc)}
+.tab[aria-pressed="true"]{background:var(--s-pill);color:var(--s-ink);--hole:var(--s-pill)}
+.tab span{font-size:11px}
+.tab[aria-pressed="true"] span{font-weight:600}
+.tab svg{width:26px;height:26px;overflow:visible}
+
+.sheet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px;padding:18px 4px 12px;border-radius:18px;background:var(--surface);--hole:var(--surface)}
+.cell svg{width:42px;height:42px;overflow:visible}
+.cell .off{color:var(--muted)}
+.cell .on{color:var(--ink)}
+.cell b{font-size:12px;font-weight:600}
+.cell small{font-size:10px;color:var(--muted);margin-top:-10px}
+.note{margin:0;font-size:12px;color:var(--muted)}
+
+@keyframes twinkle{0%,100%{opacity:.75;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
+.glow{transform-box:fill-box;transform-origin:center;animation:twinkle 2.8s ease-in-out infinite}
+.tab:focus-visible,.seg button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){.tab{transition:none}.glow{animation:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>星象</h1>
+    <p class="sub">Vesper 是黄昏时第一颗亮起来的星。首页是暮星，日历是月相（没选中是 11 月 5 日的残月，选中是 7 月 25 日的盈凸月），生活是日出，设置是行星。选中的那一个会被点亮。</p>
+  </header>
+
+  <div class="seg" role="group" aria-label="画法" id="seg"></div>
+  <p class="how" id="how"></p>
+
+  <div class="screen day" aria-label="白天的底栏预览">
+    <div class="page" data-title>首页</div><div class="when">白天</div>
+    <div class="bar" data-bar></div>
+  </div>
+  <div class="screen night" aria-label="夜里的底栏预览">
+    <div class="page" data-title>首页</div><div class="when">夜里</div>
+    <div class="bar" data-bar></div>
+  </div>
+  <p class="note">点底栏可以切换，两块会一起变。</p>
+
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+const SW=1.35;
+const LINE=`fill="none" stroke="currentColor" stroke-width="${SW}" stroke-linecap="round" stroke-linejoin="round"`;
+const r2=v=>Math.round(v*100)/100;
+function star(cx,cy,rv,rh,k){
+  const P=(x,y)=>`${r2(x)} ${r2(y)}`;
+  return `M${P(cx,cy-rv)}C${P(cx+k*.3,cy-k)} ${P(cx+k,cy-k*.3)} ${P(cx+rh,cy)}C${P(cx+k,cy+k*.3)} ${P(cx+k*.3,cy+k)} ${P(cx,cy+rv)}C${P(cx-k*.3,cy+k)} ${P(cx-k,cy+k*.3)} ${P(cx-rh,cy)}C${P(cx-k,cy-k*.3)} ${P(cx-k*.3,cy-k)} ${P(cx,cy-rv)}Z`;
+}
+let gid=0;
+/* 一个形状在不同状态 / 画法下怎么画 */
+function shape(d,on,mode){
+  if(!on) return mode==='duo'
+    ? `<path d="${d}" style="fill:var(--acc)" fill-opacity=".22" stroke="currentColor" stroke-width="${SW}" stroke-linejoin="round"/>`
+    : `<path d="${d}" ${LINE}/>`;
+  return mode==='duo'
+    ? `<path d="${d}" style="fill:var(--acc)" stroke="currentColor" stroke-width="${SW}" stroke-linejoin="round"/>`
+    : `<path d="${d}" fill="currentColor" stroke="currentColor" stroke-width="${SW}" stroke-linejoin="round"/>`;
+}
+function glow(on,mode,cx,cy,r){
+  if(!on||mode!=='glow') return '';
+  const id='g'+(gid++);
+  return `<defs><radialGradient id="${id}"><stop offset="0" style="stop-color:var(--acc)" stop-opacity=".6"/><stop offset="1" style="stop-color:var(--acc)" stop-opacity="0"/></radialGradient></defs><circle class="glow" cx="${cx}" cy="${cy}" r="${r}" fill="url(#${id})"/>`;
+}
+
+const MAIN=star(10.5,13,8.5,7,2.3), SMALL=star(18.6,5.4,3.2,2.5,.9);
+const WAXING='M12 4A8 8 0 0 1 12 20A4.8 8 0 0 1 12 4Z';   /* 盈凸月，交界线向左鼓 */
+const WANING='M12 4A8 8 0 0 0 12 20A4.32 8 0 0 1 12 4Z';  /* 残月，亮面在左 */
+const SUN='M7 15.5A5 5 0 0 1 17 15.5Z';
+const RAYS=`<path ${LINE} d="M12 8.5V6.6"/><path ${LINE} d="M7.05 10.55L5.71 9.21"/><path ${LINE} d="M16.95 10.55L18.29 9.21"/>`;
+const WATER=`<path ${LINE} d="M2.5 15.5H5.6"/><path ${LINE} d="M18.4 15.5H21.5"/><path ${LINE} d="M8.5 18.3H15.5"/><path ${LINE} d="M10.5 20.8H13.5"/>`;
+
+const ICONS={
+ home:(on,m)=>glow(on,m,10.5,13,11)+shape(MAIN,on,m)+shape(SMALL,on,m),
+ /* 月相：没选中是 11 月 5 日的残月（左边亮，约 23%），选中是 7 月 25 日的盈凸月（右边亮，约 80%） */
+ calendar:(on,m)=>on
+   ? glow(on,m,13,12,11)+`<circle cx="12" cy="12" r="8" ${LINE}/>`+shape(WAXING,true,m)
+   : `<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="${SW}" stroke-opacity=".4"/>`+shape(WANING,false,m),
+ life:(on,m)=>glow(on,m,12,14,10)+shape(SUN,on,m)+RAYS+WATER,
+ /* 行星：星环压扁一点，从星球下半部穿过，星环下方露出一截星球；星环和星球之间留一道缝 */
+ settings:(on,m)=>glow(on,m,12,12,10)+
+   `<g transform="translate(12 12) rotate(-20)">`+
+   `<ellipse cx="0" cy="0" rx="10.6" ry="2.5" ${LINE}/>`+
+   `<circle cx="0" cy="0" r="6.4" style="fill:var(--hole)" stroke="none"/>`+
+   shape('M5.6 0A5.6 5.6 0 1 1 -5.6 0A5.6 5.6 0 1 1 5.6 0Z',on,m)+
+   `<path d="M-10.6 0A10.6 2.5 0 0 0 10.6 0" fill="none" style="stroke:var(--hole)" stroke-width="2.4"/>`+
+   `<path d="M-10.6 0A10.6 2.5 0 0 0 10.6 0" ${LINE}/>`+
+   `</g><circle cx="3.4" cy="6.2" r=".95" fill="currentColor"/>`
+};
+const TABS=[['home','首页','暮星'],['calendar','日历','月相'],['life','生活','日出'],['settings','设置','行星']];
+const MODES=[
+ ['line','精修线稿','只有黑白。线条更细，曲线更柔，四个图标的轻重调到一致。选中时整个星体变实心。'],
+ ['duo','双色','线条之外，星体里透一点金色。选中时金色填满，像被点亮。'],
+ ['glow','星光','平时和线稿一样。选中时星体变实心，身后有一圈金色的光，会很慢地呼吸闪烁。']
+];
+let mode='line', current='home';
+const svg=inner=>`<svg viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`;
+function render(){
+  gid=0;
+  document.getElementById('seg').innerHTML=MODES.map(([id,n])=>`<button type="button" data-mode="${id}" aria-pressed="${id===mode}">${n}</button>`).join('');
+  document.getElementById('how').textContent=MODES.find(x=>x[0]===mode)[2];
+  document.querySelectorAll('[data-bar]').forEach(bar=>{
+    bar.innerHTML=TABS.map(([id,t])=>`<button class="tab" type="button" data-tab="${id}" aria-pressed="${id===current}">${svg(ICONS[id](id===current,mode))}<span>${t}</span></button>`).join('');
+  });
+  document.querySelectorAll('[data-title]').forEach(el=>el.textContent=TABS.find(x=>x[0]===current)[1]);
+  document.getElementById('sheet').innerHTML=TABS.map(([id,t,k])=>`<div class="cell"><span class="off">${svg(ICONS[id](false,mode))}</span><span class="on">${svg(ICONS[id](true,mode))}</span><b>${t}</b><small>${k}</small></div>`).join('');
+}
+document.addEventListener('click',e=>{
+  const m=e.target.closest('[data-mode]'); if(m){mode=m.dataset.mode; render(); return;}
+  const b=e.target.closest('[data-tab]'); if(b){current=b.dataset.tab; render();}
+});
+render();
+</script>

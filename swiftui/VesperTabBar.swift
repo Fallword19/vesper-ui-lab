@@ -4,15 +4,18 @@ import UIKit
 // MARK: - 底栏主题
 
 /// 首页底栏的配色。取自首页 / 日语页：白卡片、近黑细线，不用彩色。
-/// 这个文件不依赖其他文件，单独拖进项目就能用。
+/// 这个文件只依赖同目录的 StarIcon.swift。
 enum TabTheme {
     static let surface    = adaptive(0xFFFFFF, 0x1C1C1E)  // 底栏底色
     static let pill       = adaptive(0xF2F2F4, 0x2C2C2E)  // 选中胶囊
     static let ink        = adaptive(0x1C1C1E, 0xF2F2F4)  // 选中图标与文字
     static let idle       = adaptive(0x9C9CA1, 0x7C7C82)  // 未选中
+    static let accent     = adaptive(0xC9963F, 0xE2B77C)  // 金色，只在「双色」「星光」画法里用到
     static let background = adaptive(0xF7F7F8, 0x111113)  // 仅预览用的页面底色
 
-    static let iconSize: CGFloat = 20
+    /// 图标画法：.line 精修线稿 / .duo 双色 / .glow 星光。换画法只改这一行。
+    static let iconStyle: StarIconStyle = .line
+    static let iconSize: CGFloat = 26
 
     /// 浅色 / 深色模式各一个颜色。
     private static func adaptive(_ light: UInt32, _ dark: UInt32) -> Color {
@@ -42,31 +45,13 @@ enum VesperTab: CaseIterable, Identifiable {
         }
     }
 
-    /// 苹果的 SF Symbols。想换图标，改这里的名字即可，候选见底部「图标候选」预览。
-    var symbol: String {
+    var icon: StarIconKind {
         switch self {
-        case .home:     "house"
-        case .calendar: "calendar"
-        case .life:     "cup.and.saucer"
-        case .settings: "gearshape"
+        case .home:     .home
+        case .calendar: .calendar
+        case .life:     .life
+        case .settings: .settings
         }
-    }
-}
-
-// MARK: - 图标
-
-/// 未选中：灰色细线。选中：墨色，有实心版本的图标会自动变实心。
-struct TabIcon: View {
-    let symbol: String
-    let isSelected: Bool
-
-    var body: some View {
-        Image(systemName: symbol)
-            .symbolVariant(isSelected ? .fill : .none)
-            .font(.system(size: TabTheme.iconSize, weight: isSelected ? .medium : .regular))
-            .foregroundStyle(isSelected ? TabTheme.ink : TabTheme.idle)
-            .frame(width: 28, height: 26)
-            .contentTransition(.symbolEffect(.replace))
     }
 }
 
@@ -99,7 +84,12 @@ struct VesperTabBar: View {
             }
         } label: {
             VStack(spacing: 4) {
-                TabIcon(symbol: tab.symbol, isSelected: isSelected)
+                StarIcon(kind: tab.icon,
+                         isSelected: isSelected,
+                         style: TabTheme.iconStyle,
+                         color: isSelected ? TabTheme.ink : TabTheme.idle,
+                         accent: TabTheme.accent)
+                    .frame(width: TabTheme.iconSize, height: TabTheme.iconSize)
                 Text(tab.title)
                     .font(.system(size: 11, weight: isSelected ? .semibold : .regular))
                     .foregroundStyle(isSelected ? TabTheme.ink : TabTheme.idle)
@@ -137,38 +127,27 @@ struct VesperTabBar: View {
     return Demo()
 }
 
-/// 每个 tab 几个候选图标，上排未选中、下排选中。看中哪个，把名字填进 `VesperTab.symbol`。
-#Preview("图标候选") {
-    let candidates: [(String, [String])] = [
-        ("首页", ["house", "square.grid.2x2", "circle.grid.2x2", "rectangle.stack"]),
-        ("日历", ["calendar", "calendar.day.timeline.left", "clock", "list.bullet.rectangle"]),
-        ("生活", ["cup.and.saucer", "mug", "leaf", "sun.max", "heart", "sparkles"]),
-        ("设置", ["gearshape", "slider.horizontal.3", "person.crop.circle", "ellipsis.circle"]),
-    ]
-    return ScrollView {
-        VStack(alignment: .leading, spacing: 24) {
-            ForEach(candidates, id: \.0) { title, symbols in
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(title).font(.headline)
-                    HStack(alignment: .top, spacing: 18) {
-                        ForEach(symbols, id: \.self) { name in
-                            VStack(spacing: 8) {
-                                TabIcon(symbol: name, isSelected: false)
-                                TabIcon(symbol: name, isSelected: true)
-                                Text(name)
-                                    .font(.system(size: 8, design: .monospaced))
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(2)
-                                    .multilineTextAlignment(.center)
-                                    .frame(width: 56)
-                            }
+/// 三种画法并排对比：每组上排未选中，下排选中。
+#Preview("三种画法") {
+    let styles: [(String, StarIconStyle)] = [("精修线稿", .line), ("双色", .duo), ("星光", .glow)]
+    return VStack(alignment: .leading, spacing: 28) {
+        ForEach(styles, id: \.0) { name, style in
+            VStack(alignment: .leading, spacing: 12) {
+                Text(name).font(.headline)
+                ForEach([false, true], id: \.self) { selected in
+                    HStack(spacing: 28) {
+                        ForEach(StarIconKind.allCases, id: \.self) { kind in
+                            StarIcon(kind: kind, isSelected: selected, style: style,
+                                     color: selected ? TabTheme.ink : TabTheme.idle,
+                                     accent: TabTheme.accent)
+                                .frame(width: 40, height: 40)
                         }
                     }
                 }
             }
         }
-        .padding(20)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
+    .padding(24)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     .background(TabTheme.background)
 }
