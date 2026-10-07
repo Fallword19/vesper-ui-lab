@@ -23,6 +23,8 @@ struct StarIcon: View {
     var style: StarIconStyle = .line
     var color: Color
     var accent: Color
+    /// 月相选中时，暗面那一窄条的颜色。传未选中的灰色即可，会再调淡一点。
+    var shade: Color = .clear
 
     @State private var breathing = false
 
@@ -66,9 +68,10 @@ struct StarIcon: View {
 
         case .calendar:
             // 未选中：11 月 5 日的残月（左边亮，约 23%），整个月亮的轮廓淡淡地画出来
-            // 选中：7 月 25 日的盈凸月（右边亮，约 80%）
+            // 选中：7 月 25 日的盈凸月（右边亮，约 80%），左边暗面填淡灰色
             let disc = Path(ellipseIn: CGRect(x: 4, y: 4, width: 16, height: 16))
             if isSelected {
+                ctx.fill(disc, with: .color(shade.opacity(0.55)))
                 line(&ctx, disc)
                 paint(&ctx, Glyph.waxingGibbous)
             } else {
