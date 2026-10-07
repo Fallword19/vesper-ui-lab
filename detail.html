@@ -6,109 +6,135 @@
 <title>详情</title>
 <style>
   :root {
-    --bg: #f4f4f4;
-    --card: #fbfbfb;
-    --card-edge: rgba(255, 255, 255, 0.9);
-    --ink: #1c1c1c;
-    --ink-2: #4a4a4a;
-    --muted: #9a9a9a;
-    --faint: #c4c4c4;
-    --chip: #efefef;
-    --track: #e9e9e9;
+    --bg: #f3f3f3;
+    --ink: #1a1a1a;
+    --ink-2: #3c3c3c;
+    --muted: #9b9b9b;
+    --faint: #c9c9c9;
+    --chip: #ededed;
+    --tick: #e2e2e2;
     --accent: #e07a5f;
-    --accent-soft: #fbe9e3;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.045), 0 1px 2px rgba(0, 0, 0, 0.03);
-    --radius-lg: 30px;
-    --radius-md: 24px;
+    --accent-soft: #fbeae4;
+    --card-bg: linear-gradient(180deg, #fdfdfd 0%, #f8f8f8 100%);
+    --shadow: 0 18px 40px rgba(0, 0, 0, 0.045), 0 2px 6px rgba(0, 0, 0, 0.025);
+    --hatch: repeating-linear-gradient(-55deg, #b5b5b5 0 2px, #e6e6e6 2px 5px);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: var(--bg);
+    background: radial-gradient(120% 50% at 50% 0%, #fafafa 0%, var(--bg) 60%) var(--bg);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
 
+  button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+
   .page {
-    max-width: 460px;
+    max-width: 440px;
     margin: 0 auto;
-    padding: calc(env(safe-area-inset-top) + 28px) 20px calc(env(safe-area-inset-bottom) + 48px);
+    padding: calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 56px);
   }
 
   /* ---------- 顶栏 ---------- */
   .topbar {
     position: relative;
     display: flex;
-    align-items: center;
     justify-content: center;
     height: 48px;
-    margin-bottom: 30px;
   }
-  .back {
-    position: absolute;
-    left: 0;
+  .round, .pill {
+    background: #fbfbfb;
+    box-shadow: var(--shadow);
+  }
+  .round {
     width: 48px;
     height: 48px;
-    border: none;
     border-radius: 50%;
-    background: var(--card);
-    box-shadow: var(--shadow);
     display: grid;
     place-items: center;
-    color: var(--ink);
-    cursor: pointer;
   }
-  .title-pill {
-    padding: 0 22px;
+  .topbar .round { position: absolute; left: 0; }
+  .pill {
     height: 48px;
-    line-height: 48px;
+    padding: 0 24px;
     border-radius: 24px;
-    background: var(--card);
-    box-shadow: var(--shadow);
+    line-height: 48px;
     font-size: 17px;
     font-weight: 600;
     letter-spacing: 1px;
   }
 
-  /* ---------- 通用 ---------- */
+  /* ---------- Hero：同首页日期行 ---------- */
+  .hero {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 34px 4px 4px;
+  }
+  .hero h1 {
+    font-size: 50px;
+    font-weight: 300;
+    letter-spacing: -1px;
+  }
+  .hero h1 small {
+    margin-left: 4px;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .hero span { font-size: 15px; color: var(--muted); }
+
+  /* ---------- 分区标题 ---------- */
   .section-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 34px 2px 16px;
+    margin: 30px 0 14px;
+    min-height: 44px;
   }
   .section-title {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 22px;
+    font-size: 23px;
     font-weight: 500;
   }
   .section-title::before {
     content: "";
     width: 4px;
-    height: 22px;
+    height: 24px;
     border-radius: 2px;
     background: var(--ink);
   }
-  .section-meta {
+  .section-head .round { width: 44px; height: 44px; }
+  .link-pill {
     display: flex;
     align-items: center;
     gap: 6px;
+    height: 40px;
+    padding: 0 14px 0 16px;
+    border-radius: 20px;
+    background: var(--chip);
     font-size: 13px;
-    color: var(--muted);
+    color: var(--ink-2);
     font-variant-numeric: tabular-nums;
   }
 
+  /* ---------- 卡片 ---------- */
   .card {
-    background: var(--card);
-    border: 1px solid var(--card-edge);
-    border-radius: var(--radius-lg);
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid #fff;
+    border-radius: 30px;
     box-shadow: var(--shadow);
+    padding: 20px 22px;
   }
+  .label { font-size: 13px; color: var(--muted); letter-spacing: .5px; }
+  .head-row { display: flex; align-items: center; justify-content: space-between; }
 
   .chip {
     display: inline-flex;
@@ -119,39 +145,83 @@
     background: var(--chip);
     color: var(--muted);
     font-size: 12px;
+    font-weight: 500;
     white-space: nowrap;
   }
+  .chip.accent { background: var(--accent-soft); color: var(--accent); }
   .chip.dark { background: var(--ink); color: #fff; }
 
-  .label { font-size: 13px; color: var(--muted); }
-
-  .chev { color: var(--faint); flex: none; }
-
-  /* 斜纹进度条（同 N5 / 记忆库） */
-  .bar {
-    position: relative;
-    height: 9px;
-    border-radius: 5px;
-    background: repeating-linear-gradient(-55deg, #b8b8b8 0 2px, transparent 2px 5px), var(--track);
-    overflow: hidden;
+  .num {
+    font-weight: 300;
+    letter-spacing: -1px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
   }
-  .bar > i {
-    position: absolute;
-    inset: 0 auto 0 0;
-    border-radius: 5px;
-    background: var(--ink);
+  .num small {
+    margin-left: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
   }
 
-  /* 开关 */
+  /* ---------- 模型 bento ---------- */
+  .bento {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    gap: 14px;
+  }
+  .effort { grid-row: span 2; display: flex; flex-direction: column; }
+  .effort-word { margin-top: 14px; font-size: 40px; font-weight: 600; letter-spacing: -.5px; }
+  .effort-desc { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+
+  .meter {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+    gap: 9px;
+    margin-top: 22px;
+    min-height: 120px;
+  }
+  .meter button {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 9px;
+    height: 100%;
+  }
+  .meter i {
+    display: block;
+    border-radius: 9px;
+    background: var(--hatch);
+    transition: background .25s, height .25s;
+  }
+  .meter button:nth-child(1) i { height: 24%; }
+  .meter button:nth-child(2) i { height: 46%; }
+  .meter button:nth-child(3) i { height: 70%; }
+  .meter button:nth-child(4) i { height: 96%; }
+  .meter button.on i { background: var(--ink); }
+  .meter button.cur i { background: var(--ink); box-shadow: inset 0 0 0 0 #fff; }
+  .meter span {
+    font-size: 12px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .meter button.cur span { color: var(--ink); font-weight: 600; }
+
+  .mini { display: flex; flex-direction: column; justify-content: space-between; min-height: 148px; }
+  .mini .num { font-size: 38px; }
+  .mini-foot { display: flex; align-items: flex-end; justify-content: space-between; }
+
   .switch {
     position: relative;
     flex: none;
-    width: 58px;
-    height: 34px;
-    border: none;
-    border-radius: 17px;
-    background: #e3e3e3;
-    cursor: pointer;
+    width: 54px;
+    height: 32px;
+    border-radius: 16px;
+    background: #e1e1e1;
     transition: background .25s;
   }
   .switch::after {
@@ -159,313 +229,321 @@
     position: absolute;
     top: 3px;
     left: 3px;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .16);
     transition: transform .25s;
   }
   .switch[aria-checked="true"] { background: var(--ink); }
-  .switch[aria-checked="true"]::after { transform: translateX(24px); }
+  .switch[aria-checked="true"]::after { transform: translateX(22px); }
 
-  /* ---------- 模型卡 ---------- */
-  .model { padding: 24px 24px 22px; }
-  .model-top {
+  .term {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: #f0f0f0;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .05);
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    color: var(--ink-2);
   }
-  .model-name {
+  .term b { color: var(--muted); font-weight: 400; }
+  .caret { width: 2px; height: 15px; border-radius: 1px; background: var(--accent); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- 对话窗口 ---------- */
+  .window .usage {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    margin-top: 18px;
+  }
+  .window .usage .num { font-size: 56px; }
+  .window .usage em { font-style: normal; font-size: 17px; color: var(--muted); }
+
+  .ruler {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 46px;
+    margin: 22px 0 6px;
+  }
+  .ruler i {
+    width: 3px;
+    height: 28px;
+    border-radius: 2px;
+    background: var(--tick);
+  }
+  .ruler i.major { height: 40px; background: #d2d2d2; }
+  .ruler i.used { background: var(--ink); }
+  .ruler i.edge { height: 46px; background: var(--accent); }
+  .ruler-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #ececec;
+  }
+  .stats div + div { padding-left: 16px; border-left: 1px solid #ececec; }
+  .stats .num { font-size: 30px; }
+  .stats p { margin-top: 8px; font-size: 12px; color: var(--muted); }
+
+  /* ---------- 这个人 ---------- */
+  .who { padding: 22px 24px 24px; }
+  .who-name {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-top: 8px;
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 600;
-    letter-spacing: -0.5px;
+    letter-spacing: -.5px;
   }
-  .model-name::before {
+  .who-name::before {
     content: "";
     width: 9px;
     height: 9px;
     border-radius: 50%;
     background: var(--accent);
   }
-  .model-switch {
-    border: none;
-    background: none;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font: inherit;
-    font-size: 14px;
-    color: var(--muted);
-    cursor: pointer;
-  }
+  .wave { display: flex; align-items: flex-end; gap: 7px; height: 34px; margin-top: 22px; }
+  .wave i { width: 5px; border-radius: 3px; background: var(--ink-2); }
+  .wave i:nth-child(odd) { background: #a8a8a8; }
+  .who-foot { display: flex; align-items: flex-end; justify-content: space-between; }
+  .who-foot a { display: flex; align-items: center; gap: 4px; font-size: 14px; color: var(--muted); }
 
-  .effort-label { margin: 26px 0 10px; }
-  .segment {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    padding: 4px;
-    border-radius: 22px;
-    background: var(--chip);
-  }
-  .segment-thumb {
+  .timeline { position: relative; margin-top: 18px; padding-left: 34px; }
+  .timeline::before {
+    content: "";
     position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: 4px;
-    width: calc((100% - 8px) / 4);
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: transform .3s cubic-bezier(.3, .7, .2, 1);
+    left: 9px;
+    top: 30px;
+    bottom: 30px;
+    border-left: 1.5px dashed #cfcfcf;
   }
-  .segment button {
-    position: relative;
-    height: 38px;
-    border: none;
-    background: none;
-    font: inherit;
-    font-size: 15px;
-    color: var(--ink-2);
-    cursor: pointer;
-    transition: color .2s;
-  }
-  .segment button[aria-checked="true"] { color: var(--ink); font-weight: 600; }
-
-  .row-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 22px;
-    padding-top: 20px;
-    border-top: 1px solid #ededed;
-  }
-  .row-title { font-size: 16px; font-weight: 500; }
-  .row-sub { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
-
-  /* ---------- 对话窗口 ---------- */
-  .window-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  .usage { grid-column: 1 / -1; padding: 22px 24px 24px; }
-  .usage-top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-  }
-  .big {
-    font-size: 54px;
-    font-weight: 300;
-    letter-spacing: -1px;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-  .big small {
-    margin-left: 6px;
-    font-size: 15px;
-    font-weight: 400;
-    letter-spacing: 0;
-    color: var(--muted);
-  }
-  .usage .big { margin: 18px 0 20px; }
-  .usage-foot {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-    font-size: 13px;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .stat { padding: 20px 22px 22px; }
-  .stat .big { margin-top: 16px; font-size: 44px; }
-
-  /* ---------- 这个人 ---------- */
-  .name-pill {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 22px 0 26px;
-    height: 64px;
-    border-radius: 32px;
-  }
-  .name-pill .label { font-size: 15px; }
-  .name-pill strong { font-size: 18px; font-weight: 500; }
-
-  .list { display: grid; gap: 12px; margin-top: 14px; }
-  .item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px 20px 20px 22px;
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-  }
-  .item-icon {
-    flex: none;
-    width: 42px;
-    height: 42px;
+  .node { position: relative; margin-bottom: 14px; }
+  .node::before {
+    content: "";
+    position: absolute;
+    left: -34px;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    margin-top: -10px;
     border-radius: 50%;
-    background: var(--chip);
-    display: grid;
-    place-items: center;
-    color: var(--ink-2);
+    border: 2px solid #c4c4c4;
+    background: var(--bg);
   }
-  .item-body { flex: 1; min-width: 0; }
-  .item-title { font-size: 17px; font-weight: 500; }
-  .item-sub { margin-top: 5px; font-size: 13px; color: var(--muted); }
-  .item .switch { margin-left: auto; }
+  .node.lead::before { border-color: var(--ink); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 8px var(--ink); }
+  .node .card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px 18px 22px;
+    border-radius: 26px;
+  }
+  .node-body { flex: 1; min-width: 0; }
+  .node-title { font-size: 17px; font-weight: 500; }
+  .node-sub { margin-top: 5px; font-size: 13px; color: var(--muted); }
+  .chev { flex: none; color: var(--faint); }
+
+  .conflict.off .node-title { color: var(--ink-2); }
 </style>
 </head>
 <body>
 <main class="page">
 
   <header class="topbar">
-    <button class="back" aria-label="返回">
+    <button class="round" aria-label="返回">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <div class="title-pill">详情</div>
+    <div class="pill">详情</div>
   </header>
 
-  <!-- 模型 -->
-  <div class="section-head" style="margin-top:0">
-    <h2 class="section-title">模型</h2>
+  <div class="hero">
+    <h1>Opus 4.6<small>/sdk-2</small></h1>
+    <span>Claude</span>
   </div>
-  <section class="card model">
-    <div class="model-top">
-      <span class="label">当前模型</span>
-      <span class="chip">sdk-2</span>
-    </div>
-    <div class="model-top" style="align-items:center">
-      <div class="model-name">Opus 4.6</div>
-      <button class="model-switch">切换
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-    </div>
 
-    <div class="label effort-label">思考强度</div>
-    <div class="segment" role="radiogroup" aria-label="思考强度">
-      <span class="segment-thumb"></span>
-      <button role="radio" aria-checked="false">低</button>
-      <button role="radio" aria-checked="false">中</button>
-      <button role="radio" aria-checked="false">高</button>
-      <button role="radio" aria-checked="true">Max</button>
-    </div>
+  <!-- 模型 -->
+  <div class="section-head">
+    <h2 class="section-title">模型</h2>
+    <button class="round" aria-label="切换模型">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg>
+    </button>
+  </div>
 
-    <div class="row-toggle">
-      <div>
-        <div class="row-title">启用思考链</div>
-        <div class="row-sub">仅对支持思考链的模型生效</div>
+  <div class="bento">
+    <section class="card effort">
+      <div class="head-row">
+        <span class="label">思考强度</span>
+        <span class="chip accent" id="effortTag">最深</span>
       </div>
-      <button class="switch" role="switch" aria-checked="true" aria-label="启用思考链"></button>
-    </div>
-  </section>
+      <div class="effort-word" id="effortWord">Max</div>
+      <div class="effort-desc" id="effortDesc">更慢，但想得最透</div>
+      <div class="meter" role="radiogroup" aria-label="思考强度">
+        <button role="radio"><i></i><span>低</span></button>
+        <button role="radio"><i></i><span>中</span></button>
+        <button role="radio"><i></i><span>高</span></button>
+        <button role="radio"><i></i><span>Max</span></button>
+      </div>
+    </section>
+
+    <section class="card mini">
+      <div class="head-row">
+        <span class="label">思考链</span>
+        <span class="chip dark" id="chainTag">开启</span>
+      </div>
+      <div class="mini-foot">
+        <span class="label" style="font-size:12px;line-height:1.5">仅支持的<br>模型生效</span>
+        <button class="switch" role="switch" aria-checked="true" aria-label="启用思考链" data-tag="chainTag"></button>
+      </div>
+    </section>
+
+    <section class="card mini">
+      <span class="label">通道</span>
+      <div class="term"><b>&gt;_</b> sdk-2 <span class="caret"></span></div>
+    </section>
+  </div>
 
   <!-- 当前对话窗口 -->
   <div class="section-head">
     <h2 class="section-title">当前对话窗口</h2>
-    <span class="section-meta">约 9.7k / 96.0k
+    <a class="link-pill">约 9.7k / 96.0k
       <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </span>
+    </a>
   </div>
-  <div class="window-grid">
-    <section class="card usage">
-      <div class="usage-top">
-        <span class="label">估算余量</span>
-        <span class="chip">10% 已用</span>
-      </div>
-      <div class="big">86.3k<small>tokens</small></div>
-      <div class="bar"><i style="width:10.1%"></i></div>
-      <div class="usage-foot"><span>已用 9.7k</span><span>上限 96.0k</span></div>
-    </section>
-    <section class="card stat">
-      <span class="label">对话</span>
-      <div class="big">172<small>轮</small></div>
-    </section>
-    <section class="card stat">
-      <span class="label">记录</span>
-      <div class="big">468<small>条</small></div>
-    </section>
-  </div>
+
+  <section class="card window">
+    <div class="head-row">
+      <span class="label">估算余量</span>
+      <span class="chip accent">已用 10%</span>
+    </div>
+    <div class="usage">
+      <span class="num">86.3k</span><em>/96.0k</em>
+    </div>
+    <div class="ruler" id="ruler"></div>
+    <div class="ruler-scale"><span>0</span><span>24k</span><span>48k</span><span>72k</span><span>96k</span></div>
+    <div class="stats">
+      <div><div class="num">172</div><p>轮</p></div>
+      <div><div class="num">468</div><p>条记录</p></div>
+      <div><div class="num">9.7k</div><p>已用</p></div>
+    </div>
+  </section>
 
   <!-- 这个人 -->
   <div class="section-head">
     <h2 class="section-title">这个人</h2>
   </div>
-  <div class="card name-pill">
-    <span class="label">备注名</span>
-    <strong>Claude</strong>
-  </div>
 
-  <div class="list">
-    <a class="card item">
-      <span class="item-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      </span>
-      <span class="item-body">
-        <div class="item-title">人格</div>
-        <div class="item-sub">他是谁、怎么说话、什么偏好</div>
-      </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
-    <a class="card item">
-      <span class="item-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5A8.5 8.5 0 1 1 8.5 4a7 7 0 0 0 11.5 11.5z"/></svg>
-      </span>
-      <span class="item-body">
-        <div class="item-title">内心状态</div>
-        <div class="item-sub">情绪、欲望、心理空间</div>
-      </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
-    <a class="card item">
-      <span class="item-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 10v10"/></svg>
-      </span>
-      <span class="item-body">
-        <div class="item-title">上下文预算</div>
-        <div class="item-sub">窗口、记忆、缓存</div>
-      </span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
-    <div class="card item">
-      <span class="item-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg>
-      </span>
-      <span class="item-body">
-        <div class="item-title">冲突判定</div>
-        <div class="item-sub">关闭后不再触发情绪冲突指南与防御状态</div>
-      </span>
-      <button class="switch" role="switch" aria-checked="false" aria-label="冲突判定"></button>
+  <section class="card who">
+    <div class="head-row">
+      <span class="label">备注名</span>
+      <span class="chip">编辑</span>
+    </div>
+    <div class="who-name">Claude</div>
+    <div class="who-foot">
+      <div class="wave">
+        <i style="height:30%"></i><i style="height:55%"></i><i style="height:40%"></i><i style="height:100%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:62%"></i>
+      </div>
+    </div>
+  </section>
+
+  <div class="timeline">
+    <div class="node lead">
+      <a class="card">
+        <span class="node-body">
+          <div class="node-title">人格</div>
+          <div class="node-sub">他是谁、怎么说话、什么偏好</div>
+        </span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="node">
+      <a class="card">
+        <span class="node-body">
+          <div class="node-title">内心状态</div>
+          <div class="node-sub">情绪、欲望、心理空间</div>
+        </span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="node">
+      <a class="card">
+        <span class="node-body">
+          <div class="node-title">上下文预算</div>
+          <div class="node-sub">窗口、记忆、缓存</div>
+        </span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="node conflict" style="margin-bottom:0">
+      <div class="card">
+        <span class="node-body">
+          <div class="node-title">冲突判定</div>
+          <div class="node-sub">关闭后不再触发情绪冲突指南与防御状态</div>
+        </span>
+        <button class="switch" role="switch" aria-checked="false" aria-label="冲突判定"></button>
+      </div>
     </div>
   </div>
 
 </main>
 <script>
+  // 开关
   document.querySelectorAll('.switch').forEach(function (s) {
     s.addEventListener('click', function () {
-      s.setAttribute('aria-checked', s.getAttribute('aria-checked') !== 'true');
+      var on = s.getAttribute('aria-checked') !== 'true';
+      s.setAttribute('aria-checked', on);
+      var tag = s.dataset.tag && document.getElementById(s.dataset.tag);
+      if (tag) { tag.textContent = on ? '开启' : '关闭'; tag.className = 'chip' + (on ? ' dark' : ''); }
     });
   });
 
-  var seg = document.querySelector('.segment');
-  var thumb = seg.querySelector('.segment-thumb');
-  var opts = Array.prototype.slice.call(seg.querySelectorAll('button'));
+  // 思考强度
+  var levels = [
+    { word: '低', tag: '最快', desc: '几乎不停顿，直接回答' },
+    { word: '中', tag: '均衡', desc: '想一想，再开口' },
+    { word: '高', tag: '深入', desc: '多绕几步，更稳' },
+    { word: 'Max', tag: '最深', desc: '更慢，但想得最透' }
+  ];
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.meter button'));
   function pick(i) {
-    opts.forEach(function (b, j) { b.setAttribute('aria-checked', i === j); });
-    thumb.style.transform = 'translateX(' + i * 100 + '%)';
+    bars.forEach(function (b, j) {
+      b.classList.toggle('on', j <= i);
+      b.classList.toggle('cur', j === i);
+      b.setAttribute('aria-checked', j === i);
+    });
+    document.getElementById('effortWord').textContent = levels[i].word;
+    document.getElementById('effortTag').textContent = levels[i].tag;
+    document.getElementById('effortDesc').textContent = levels[i].desc;
   }
-  opts.forEach(function (b, i) { b.addEventListener('click', function () { pick(i); }); });
-  pick(opts.findIndex(function (b) { return b.getAttribute('aria-checked') === 'true'; }));
+  bars.forEach(function (b, i) { b.addEventListener('click', function () { pick(i); }); });
+  pick(3);
+
+  // 容量刻度：48 根，每根 2k
+  var ruler = document.getElementById('ruler');
+  var used = 9.7 / 96 * 48;
+  for (var k = 0; k < 48; k++) {
+    var t = document.createElement('i');
+    if (k < Math.floor(used)) t.className = 'used';
+    else if (k === Math.floor(used)) t.className = 'edge';
+    else if (k % 12 === 0) t.className = 'major';
+    ruler.appendChild(t);
+  }
 </script>
 </body>
 </html>
