@@ -88,8 +88,7 @@ struct VesperTabBar: View {
                          isSelected: isSelected,
                          style: TabTheme.iconStyle,
                          color: isSelected ? TabTheme.ink : TabTheme.idle,
-                         accent: TabTheme.accent,
-                         shade: TabTheme.idle)
+                         accent: TabTheme.accent)
                     .frame(width: TabTheme.iconSize, height: TabTheme.iconSize)
                 Text(tab.title)
                     .font(.system(size: 11, weight: isSelected ? .semibold : .regular))
@@ -140,8 +139,7 @@ struct VesperTabBar: View {
                         ForEach(StarIconKind.allCases, id: \.self) { kind in
                             StarIcon(kind: kind, isSelected: selected, style: style,
                                      color: selected ? TabTheme.ink : TabTheme.idle,
-                                     accent: TabTheme.accent,
-                                     shade: TabTheme.idle)
+                                     accent: TabTheme.accent)
                                 .frame(width: 40, height: 40)
                         }
                     }

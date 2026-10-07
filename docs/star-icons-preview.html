@@ -31,14 +31,14 @@ h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
 .day{--s-bg:#F7F7F8;--s-bar:#FFFFFF;--s-pill:#F2F2F4;--s-ink:#1C1C1E;--s-idle:#9C9CA1;--s-acc:#C9963F;--s-sh:0 6px 18px rgba(0,0,0,.06);box-shadow:0 0 0 .5px #E5E5EA}
 .night{--s-bg:#0E0E10;--s-bar:#1C1C1E;--s-pill:#2C2C2E;--s-ink:#F2F2F4;--s-idle:#7C7C82;--s-acc:#E2B77C;--s-sh:0 6px 18px rgba(0,0,0,.5)}
 .bar{margin:0 20px;padding:6px;display:flex;gap:4px;background:var(--s-bar);border-radius:999px;box-shadow:var(--s-sh)}
-.tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;border:0;border-radius:999px;background:transparent;color:var(--s-idle);font:inherit;cursor:pointer;transition:background .25s,color .25s;--hole:var(--s-bar);--acc:var(--s-acc);--shade:var(--s-idle)}
+.tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;border:0;border-radius:999px;background:transparent;color:var(--s-idle);font:inherit;cursor:pointer;transition:background .25s,color .25s;--hole:var(--s-bar);--acc:var(--s-acc)}
 .tab[aria-pressed="true"]{background:var(--s-pill);color:var(--s-ink);--hole:var(--s-pill)}
 .tab span{font-size:11px}
 .tab[aria-pressed="true"] span{font-weight:600}
 .tab svg{width:26px;height:26px;overflow:visible}
 
 .sheet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.cell{display:flex;flex-direction:column;align-items:center;gap:14px;padding:18px 4px 12px;border-radius:18px;background:var(--surface);--hole:var(--surface);--shade:var(--muted)}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px;padding:18px 4px 12px;border-radius:18px;background:var(--surface);--hole:var(--surface)}
 .cell svg{width:42px;height:42px;overflow:visible}
 .cell .off{color:var(--muted)}
 .cell .on{color:var(--ink)}
@@ -107,9 +107,9 @@ const WATER=`<path ${LINE} d="M2.5 15.5H5.6"/><path ${LINE} d="M18.4 15.5H21.5"/
 
 const ICONS={
  home:(on,m)=>glow(on,m,10.5,13,11)+shape(MAIN,on,m)+shape(SMALL,on,m),
- /* 月相：没选中是 11 月 5 日的残月（左边亮，约 23%），选中是 7 月 25 日的盈凸月（右边亮，约 80%） */
+ /* 月相：没选中是 11 月 5 日的残月（左边亮，约 23%），选中是 7 月 25 日的盈凸月（右边亮，约 80%）。暗面不填色，外轮廓是淡淡的线 */
  calendar:(on,m)=>on
-   ? glow(on,m,13,12,11)+`<circle cx="12" cy="12" r="8" style="fill:var(--shade)" fill-opacity=".55"/>`+`<circle cx="12" cy="12" r="8" ${LINE}/>`+shape(WAXING,true,m)
+   ? glow(on,m,13,12,11)+`<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="${SW}" stroke-opacity=".4"/>`+shape(WAXING,true,m)
    : `<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="${SW}" stroke-opacity=".4"/>`+shape(WANING,false,m),
  life:(on,m)=>glow(on,m,12,14,10)+shape(SUN,on,m)+RAYS+WATER,
  /* 行星：星环压扁一点，从星球下半部穿过，星环下方露出一截星球；星环和星球之间留一道缝 */
