@@ -11,12 +11,12 @@
     --ink-2: #555;
     --muted: #a3a3a3;
     --faint: #cdcdcd;
+    --hair: #e6e6e6;
     --line: #ececec;
-    --chip: #ededed;
+    --chip: #eeeeee;
     --accent: #e07a5f;
     --card-bg: linear-gradient(180deg, #fdfdfd 0%, #f9f9f9 100%);
     --shadow: 0 14px 34px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.025);
-    --hatch: repeating-linear-gradient(-55deg, #bdbdbd 0 1.6px, #ebebeb 1.6px 5px);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,6 +29,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   button, a { font: inherit; color: inherit; border: none; background: none; cursor: pointer; text-decoration: none; }
+  svg { display: block; }
 
   .page {
     max-width: 440px;
@@ -37,49 +38,21 @@
   }
 
   /* 顶栏 */
-  .topbar { position: relative; display: flex; justify-content: center; height: 48px; }
+  .topbar { position: relative; display: flex; justify-content: center; height: 48px; margin-bottom: 30px; }
   .round, .pill { background: #fbfbfb; box-shadow: var(--shadow); }
   .round { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; }
   .topbar .round { position: absolute; left: 0; }
   .pill { height: 48px; padding: 0 24px; border-radius: 24px; line-height: 48px; font-size: 17px; font-weight: 600; letter-spacing: 1px; }
 
-  /* 身份 */
-  .identity { margin: 40px 4px 6px; }
-  .identity .head-row { align-items: flex-start; }
-  .who {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 10px;
-    font-size: 54px;
-    font-weight: 200;
-    letter-spacing: -1px;
-    line-height: 1;
-  }
-  .who::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
-  .identity .round { width: 40px; height: 40px; color: var(--ink-2); }
-  .model-pick {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 36px;
-    margin-top: 22px;
-    padding: 0 12px 0 16px;
-    border-radius: 18px;
-    background: var(--chip);
-    font-size: 14px;
-  }
-  .model-pick em { font-style: normal; color: var(--muted); }
-  .model-pick svg { color: var(--muted); }
-
   /* 分区标题 */
-  .section-head { display: flex; align-items: center; justify-content: space-between; margin: 36px 0 16px; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin: 34px 0 16px; }
   .section-title { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 500; }
   .section-title::before { content: ""; width: 4px; height: 22px; border-radius: 2px; background: var(--ink); }
 
   /* 卡片 */
   .card {
     position: relative;
+    overflow: hidden;
     background: var(--card-bg);
     border: 1px solid rgba(255, 255, 255, 0.95);
     border-radius: 28px;
@@ -89,14 +62,15 @@
   .label { font-size: 13px; color: var(--muted); letter-spacing: .5px; }
   .head-row { display: flex; align-items: center; justify-content: space-between; }
   .chip { display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: 13px; background: var(--chip); color: var(--muted); font-size: 12px; }
+  .chip.dark { background: var(--ink); color: #fff; }
   .num { font-weight: 200; letter-spacing: -1.5px; line-height: 1; font-variant-numeric: tabular-nums; }
   .unit { margin-left: 6px; font-size: 13px; color: var(--muted); letter-spacing: 0; font-weight: 400; }
   .chev { flex: none; color: var(--faint); }
-
   .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .divider { height: 1px; background: var(--line); margin: 24px 0 20px; }
   .row-title { font-size: 16px; }
   .row-sub { margin-top: 4px; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .wide { grid-column: 1 / -1; }
 
   /* 开关 */
   .switch { position: relative; flex: none; width: 52px; height: 31px; border-radius: 16px; background: #e4e4e4; transition: background .25s; }
@@ -104,58 +78,83 @@
   .switch[aria-checked="true"] { background: var(--ink); }
   .switch[aria-checked="true"]::after { transform: translateX(21px); }
 
-  /* 思考强度滑杆 */
-  .slider { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 20px; }
-  .slider .track, .slider .fill { position: absolute; top: 10px; height: 2px; border-radius: 1px; }
-  .slider .track { left: 12.5%; right: 12.5%; background: var(--line); }
-  .slider .fill { left: 12.5%; background: var(--ink); transition: width .35s cubic-bezier(.3, .7, .2, 1); }
-  .slider button { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .slider .dot { width: 22px; height: 22px; display: grid; place-items: center; }
-  .slider .dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--faint); transition: all .25s; }
-  .slider button.on .dot::before { background: var(--ink); }
-  .slider button.cur .dot::before { width: 12px; height: 12px; background: var(--ink); box-shadow: 0 0 0 5px #e9e9e9; }
-  .slider span { font-size: 13px; color: var(--muted); transition: color .2s; }
-  .slider button.cur span { color: var(--ink); font-weight: 500; }
-
-  /* 对话窗口 */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .wide { grid-column: 1 / -1; }
-  .remain-num { display: flex; align-items: baseline; margin: 22px 0 22px; }
-  .remain-num .num { font-size: 60px; }
-  .remain-num em { margin-left: 6px; font-style: normal; font-size: 16px; color: var(--muted); }
-  .bar { position: relative; height: 8px; border-radius: 4px; background: var(--hatch); overflow: hidden; }
-  .bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: var(--ink); }
-  .bar-foot { display: flex; justify-content: space-between; margin-top: 12px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .stat { display: flex; flex-direction: column; justify-content: space-between; min-height: 128px; }
-  .stat .num { font-size: 44px; }
-
-  .link-row {
+  /* ---------- 身份卡：名字 + 轨道 ---------- */
+  .identity { min-height: 196px; display: flex; flex-direction: column; }
+  .identity .who {
     display: flex;
     align-items: center;
     gap: 12px;
-    height: 58px;
-    padding: 0 18px 0 24px;
-    border-radius: 29px;
+    margin-top: 16px;
+    font-size: 48px;
+    font-weight: 200;
+    letter-spacing: -1px;
+    line-height: 1;
   }
+  .identity .who::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+  .identity .who button { color: var(--faint); margin-left: 2px; }
+  .model-pick {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    margin-top: auto;
+    padding: 0 12px 0 15px;
+    border-radius: 17px;
+    background: var(--chip);
+    font-size: 13.5px;
+  }
+  .model-pick em { font-style: normal; color: var(--muted); }
+  .model-pick svg { color: var(--muted); }
+  .orbit { position: absolute; right: -18px; top: 30px; width: 170px; height: 170px; pointer-events: none; }
+
+  /* ---------- 思考卡：思维波 ---------- */
+  .wave-wrap { position: relative; height: 96px; margin: 18px 8px 6px 0; }
+  .wave-wrap svg { width: 100%; height: 100%; overflow: visible; }
+  .levels { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14px; padding: 4px; border-radius: 20px; background: #f1f1f1; }
+  .levels button { height: 34px; border-radius: 16px; font-size: 13.5px; color: var(--muted); transition: all .25s; }
+  .levels button[aria-checked="true"] { background: #fff; color: var(--ink); font-weight: 500; box-shadow: 0 2px 8px rgba(0, 0, 0, .06); }
+  .divider { height: 1px; background: var(--line); margin: 22px 0 18px; }
+
+  /* ---------- 对话窗口：点阵 ---------- */
+  .remain { display: flex; align-items: baseline; margin-top: 18px; }
+  .remain .num { font-size: 58px; }
+  .remain em { margin-left: 6px; font-style: normal; font-size: 15px; color: var(--muted); }
+  .dots {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, 1fr);
+    row-gap: 9px;
+    margin-top: 24px;
+    justify-items: center;
+  }
+  .dots i { width: 5px; height: 5px; border-radius: 50%; background: #e1e1e1; }
+  .dots i.used { background: var(--ink); }
+  .dots-foot { display: flex; justify-content: space-between; margin-top: 14px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .stat { display: flex; flex-direction: column; justify-content: space-between; min-height: 132px; }
+  .stat .num { font-size: 44px; }
+  .stat .head-row svg { color: var(--faint); }
+
+  .link-row { display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 18px 0 22px; border-radius: 30px; }
   .link-row strong { font-size: 15px; font-weight: 500; }
   .link-row span { flex: 1; font-size: 13px; color: var(--muted); }
 
-  /* 这个人 */
-  .facet { display: flex; flex-direction: column; min-height: 168px; }
-  .facet-title { font-size: 19px; font-weight: 500; }
-  .facet-sub { margin-top: 8px; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
-  .facet .go {
-    margin-top: auto;
-    align-self: flex-end;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: var(--chip);
-    display: grid;
-    place-items: center;
-    color: var(--ink-2);
-  }
-  .conflict { margin-top: 14px; }
+  /* ---------- 这个人 ---------- */
+  .facet { display: flex; flex-direction: column; min-height: 200px; }
+  .facet .go { position: absolute; top: 18px; right: 18px; width: 32px; height: 32px; border-radius: 50%; background: var(--chip); display: grid; place-items: center; color: var(--ink-2); }
+  .facet .art { height: 74px; margin-top: 4px; }
+  .facet-title { margin-top: auto; font-size: 18px; font-weight: 500; }
+  .facet-sub { margin-top: 6px; font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+
+  .conflict { display: flex; align-items: center; gap: 18px; }
+  .conflict .rings { position: relative; flex: none; width: 46px; height: 28px; }
+  .conflict .rings i { position: absolute; top: 2px; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--ink); transition: transform .35s cubic-bezier(.3, .7, .2, 1), border-color .25s; }
+  .conflict .rings i:first-child { left: 0; transform: translateX(5px); }
+  .conflict .rings i:last-child { right: 0; transform: translateX(-5px); }
+  .conflict.off .rings i { border-color: var(--faint); transform: none; }
+  .conflict .body { flex: 1; min-width: 0; }
 </style>
 </head>
 <body>
@@ -168,17 +167,25 @@
     <div class="pill">详情</div>
   </header>
 
-  <!-- 身份：他是谁、用什么模型 -->
-  <section class="identity">
-    <div class="head-row">
-      <span class="label">备注名</span>
-      <button class="round" aria-label="编辑备注名">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
+  <!-- 身份 -->
+  <section class="card identity">
+    <svg class="orbit" viewBox="0 0 170 170" aria-hidden="true">
+      <circle cx="85" cy="85" r="56" fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="2 5"/>
+      <circle cx="85" cy="85" r="16" fill="#ececec"/>
+      <ellipse cx="85" cy="85" rx="74" ry="26" fill="none" stroke="#d6d6d6" stroke-width="1.2" transform="rotate(-24 85 85)"/>
+      <path id="orbitPath" d="M11 85a74 26 0 1 0 148 0a74 26 0 1 0 -148 0" fill="none" transform="rotate(-24 85 85)"/>
+      <circle r="4.5" fill="#e07a5f">
+        <animateMotion dur="14s" repeatCount="indefinite"><mpath href="#orbitPath"/></animateMotion>
+      </circle>
+    </svg>
+    <span class="label">备注名</span>
+    <div class="who">Claude
+      <button aria-label="编辑备注名">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
       </button>
     </div>
-    <div class="who">Claude</div>
     <button class="model-pick">Opus 4.6 <em>sdk-2</em>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </button>
   </section>
 
@@ -187,13 +194,27 @@
     <h2 class="section-title">思考</h2>
   </div>
   <section class="card">
-    <span class="label">思考强度</span>
-    <div class="slider" role="radiogroup" aria-label="思考强度">
-      <span class="track"></span><span class="fill"></span>
-      <button role="radio"><span class="dot"></span><span>低</span></button>
-      <button role="radio"><span class="dot"></span><span>中</span></button>
-      <button role="radio"><span class="dot"></span><span>高</span></button>
-      <button role="radio"><span class="dot"></span><span>Max</span></button>
+    <div class="head-row">
+      <span class="label">思考强度</span>
+      <span class="chip dark" id="levelTag">Max</span>
+    </div>
+    <div class="wave-wrap">
+      <svg viewBox="0 0 300 96" preserveAspectRatio="none" aria-hidden="true">
+        <g stroke="#efefef" stroke-width="1">
+          <line x1="0" y1="48" x2="300" y2="48" stroke-dasharray="2 4" stroke="#e4e4e4"/>
+          <line x1="50" y1="6" x2="50" y2="90"/><line x1="100" y1="6" x2="100" y2="90"/>
+          <line x1="150" y1="6" x2="150" y2="90"/><line x1="200" y1="6" x2="200" y2="90"/>
+          <line x1="250" y1="6" x2="250" y2="90"/>
+        </g>
+        <path id="wave" fill="none" stroke="#1b1b1b" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <span id="waveEnd" style="position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#1b1b1b;box-shadow:0 0 0 5px #e9e9e9"></span>
+    </div>
+    <div class="levels" role="radiogroup" aria-label="思考强度">
+      <button role="radio">低</button>
+      <button role="radio">中</button>
+      <button role="radio">高</button>
+      <button role="radio">Max</button>
     </div>
     <div class="divider"></div>
     <div class="row">
@@ -213,21 +234,28 @@
     <section class="card wide">
       <div class="head-row">
         <span class="label">估算余量</span>
-        <span class="chip">已用 10%</span>
+        <span class="chip">每点 1k</span>
       </div>
-      <div class="remain-num"><span class="num">86.3k</span><em>/ 96.0k</em></div>
-      <div class="bar"><i style="width:10.1%"></i></div>
-      <div class="bar-foot"><span>已用约 9.7k</span><span>96.0k</span></div>
+      <div class="remain"><span class="num">86.3k</span><em>/ 96.0k</em></div>
+      <div class="dots" id="dots"></div>
+      <div class="dots-foot"><span>已用约 9.7k</span><span>10%</span></div>
     </section>
     <section class="card stat">
-      <span class="label">对话</span>
+      <div class="head-row">
+        <span class="label">对话</span>
+        <svg width="30" height="22" viewBox="0 0 30 22" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1" y="1" width="18" height="9" rx="4.5"/><rect x="11" y="12" width="18" height="9" rx="4.5"/></svg>
+      </div>
       <div><span class="num">172</span><span class="unit">轮</span></div>
     </section>
     <section class="card stat">
-      <span class="label">记录</span>
+      <div class="head-row">
+        <span class="label">记录</span>
+        <svg width="26" height="24" viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1" y="9" width="24" height="14" rx="3"/><path d="M4 5.5h18M7 2h12"/></svg>
+      </div>
       <div><span class="num">468</span><span class="unit">条</span></div>
     </section>
     <a class="card link-row wide">
+      <svg width="34" height="16" viewBox="0 0 34 16" fill="none" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#1b1b1b"/><circle cx="17" cy="8" r="7" stroke="#9b9b9b"/><circle cx="26" cy="8" r="7" stroke="#cdcdcd"/></svg>
       <strong>上下文预算</strong>
       <span>窗口、记忆、缓存</span>
       <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -240,48 +268,105 @@
   </div>
   <div class="grid">
     <a class="card facet">
-      <span class="label">01</span>
-      <div class="facet-title" style="margin-top:14px">人格</div>
-      <div class="facet-sub">他是谁、怎么说话、<br>什么偏好</div>
       <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      <!-- 指纹：独一无二的“他” -->
+      <svg class="art" width="74" height="74" viewBox="0 0 74 74" fill="none" stroke-linecap="round" aria-hidden="true">
+        <g stroke="#cfcfcf" stroke-width="1.4">
+          <path d="M5 66V37a32 32 0 0 1 64 0v29"/>
+          <path d="M13 66V37a24 24 0 0 1 48 0v22"/>
+          <path d="M21 66V37a16 16 0 0 1 32 0v29"/>
+        </g>
+        <path d="M29 66V37a8 8 0 0 1 16 0v15" stroke="#1b1b1b" stroke-width="1.6"/>
+      </svg>
+      <div class="facet-title">人格</div>
+      <div class="facet-sub">他是谁、怎么说话、<br>什么偏好</div>
     </a>
     <a class="card facet">
-      <span class="label">02</span>
-      <div class="facet-title" style="margin-top:14px">内心状态</div>
-      <div class="facet-sub">情绪、欲望、<br>心理空间</div>
       <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      <!-- 月相：起伏的内心 -->
+      <svg class="art" width="74" height="74" viewBox="0 0 74 74" aria-hidden="true">
+        <defs>
+          <mask id="crescent"><rect width="74" height="74" fill="#fff"/><circle cx="46" cy="30" r="22" fill="#000"/></mask>
+        </defs>
+        <circle cx="34" cy="38" r="24" fill="none" stroke="#e3e3e3" stroke-width="1.2" stroke-dasharray="2 4"/>
+        <circle cx="34" cy="38" r="24" fill="#2b2b2b" mask="url(#crescent)"/>
+        <circle cx="62" cy="12" r="1.8" fill="#c9c9c9"/>
+        <circle cx="68" cy="24" r="1.2" fill="#d9d9d9"/>
+      </svg>
+      <div class="facet-title">内心状态</div>
+      <div class="facet-sub">情绪、欲望、<br>心理空间</div>
     </a>
-  </div>
-  <section class="card conflict">
-    <div class="row">
-      <div>
+    <section class="card conflict off wide" id="conflict">
+      <span class="rings" aria-hidden="true"><i></i><i></i></span>
+      <div class="body">
         <div class="row-title">冲突判定</div>
         <div class="row-sub">关闭后不再触发情绪冲突指南与防御状态</div>
       </div>
       <button class="switch" role="switch" aria-checked="false" aria-label="冲突判定"></button>
-    </div>
-  </section>
+    </section>
+  </div>
 
 </main>
 <script>
+  // 开关
   document.querySelectorAll('.switch').forEach(function (s) {
     s.addEventListener('click', function () {
-      s.setAttribute('aria-checked', s.getAttribute('aria-checked') !== 'true');
+      var on = s.getAttribute('aria-checked') !== 'true';
+      s.setAttribute('aria-checked', on);
+      var c = s.closest('.conflict');
+      if (c) c.classList.toggle('off', !on);
     });
   });
 
-  var steps = Array.prototype.slice.call(document.querySelectorAll('.slider button'));
-  var fill = document.querySelector('.slider .fill');
-  function pick(i) {
-    steps.forEach(function (b, j) {
-      b.classList.toggle('on', j <= i);
-      b.classList.toggle('cur', j === i);
-      b.setAttribute('aria-checked', j === i);
-    });
-    fill.style.width = (i / 3 * 75) + '%';
+  // 容量点阵：96 点，每点 1k
+  var dots = document.getElementById('dots');
+  for (var k = 0; k < 96; k++) {
+    var d = document.createElement('i');
+    if (k < 10) d.className = 'used';
+    dots.appendChild(d);
   }
-  steps.forEach(function (b, i) { b.addEventListener('click', function () { pick(i); }); });
-  pick(3);
+
+  // 思维波：强度越高，振幅越大、起伏越密
+  var wave = document.getElementById('wave');
+  var end = document.getElementById('waveEnd');
+  var tag = document.getElementById('levelTag');
+  var opts = Array.prototype.slice.call(document.querySelectorAll('.levels button'));
+  var presets = [
+    { amp: 6, cyc: 1.2 },
+    { amp: 14, cyc: 2 },
+    { amp: 24, cyc: 2.8 },
+    { amp: 34, cyc: 3.6 }
+  ];
+  var cur = { amp: 34, cyc: 3.6 }, anim;
+
+  function draw(p) {
+    var pts = [], y = 48;
+    for (var x = 0; x <= 300; x += 2) {
+      var t = x / 300;
+      var env = Math.sin(Math.PI * Math.min(t * 1.15, 1)) * 0.75 + t * 0.25;
+      y = 48 - p.amp * env * Math.sin(t * p.cyc * 2 * Math.PI + 0.4);
+      pts.push((x ? 'L' : 'M') + x + ' ' + y.toFixed(2));
+    }
+    wave.setAttribute('d', pts.join(''));
+    end.style.left = '100%';
+    end.style.top = (y / 96 * 100) + '%';
+  }
+
+  function pick(i) {
+    opts.forEach(function (b, j) { b.setAttribute('aria-checked', i === j); });
+    tag.textContent = opts[i].textContent;
+    var from = { amp: cur.amp, cyc: cur.cyc }, to = presets[i], t0 = performance.now();
+    cancelAnimationFrame(anim);
+    (function step(now) {
+      var k = Math.min((now - t0) / 500, 1), e = 1 - Math.pow(1 - k, 3);
+      cur = { amp: from.amp + (to.amp - from.amp) * e, cyc: from.cyc + (to.cyc - from.cyc) * e };
+      draw(cur);
+      if (k < 1) anim = requestAnimationFrame(step);
+    })(t0);
+  }
+  opts.forEach(function (b, i) { b.addEventListener('click', function () { pick(i); }); });
+  opts[3].setAttribute('aria-checked', true);
+  draw(cur);
 </script>
 </body>
 </html>
