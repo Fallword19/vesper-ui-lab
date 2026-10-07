@@ -1,16 +1,29 @@
 import SwiftUI
+import UIKit
 
 // MARK: - 底栏主题
 
 /// 首页底栏的配色。取自首页 / 日语页：白卡片、近黑细线，不用彩色。
-/// `Color(light:dark:)` 定义在 MujiDetailView.swift。
+/// 这个文件不依赖其他文件，单独拖进项目就能用。
 enum TabTheme {
-    static let surface  = Color(light: 0xFFFFFF, dark: 0x1C1C1E)  // 底栏底色
-    static let pill     = Color(light: 0xF2F2F4, dark: 0x2C2C2E)  // 选中胶囊
-    static let ink      = Color(light: 0x1C1C1E, dark: 0xF2F2F4)  // 选中图标与文字
-    static let idle     = Color(light: 0x9C9CA1, dark: 0x7C7C82)  // 未选中
+    static let surface    = adaptive(0xFFFFFF, 0x1C1C1E)  // 底栏底色
+    static let pill       = adaptive(0xF2F2F4, 0x2C2C2E)  // 选中胶囊
+    static let ink        = adaptive(0x1C1C1E, 0xF2F2F4)  // 选中图标与文字
+    static let idle       = adaptive(0x9C9CA1, 0x7C7C82)  // 未选中
+    static let background = adaptive(0xF7F7F8, 0x111113)  // 仅预览用的页面底色
 
     static let iconSize: CGFloat = 20
+
+    /// 浅色 / 深色模式各一个颜色。
+    private static func adaptive(_ light: UInt32, _ dark: UInt32) -> Color {
+        func ui(_ hex: UInt32) -> UIColor {
+            UIColor(red: CGFloat((hex >> 16) & 0xFF) / 255,
+                    green: CGFloat((hex >> 8) & 0xFF) / 255,
+                    blue: CGFloat(hex & 0xFF) / 255,
+                    alpha: 1)
+        }
+        return Color(UIColor { $0.userInterfaceStyle == .dark ? ui(dark) : ui(light) })
+    }
 }
 
 // MARK: - 数据
@@ -115,7 +128,7 @@ struct VesperTabBar: View {
         @State private var tab: VesperTab = .home
         var body: some View {
             ZStack(alignment: .bottom) {
-                Color(light: 0xF7F7F8, dark: 0x111113).ignoresSafeArea()
+                TabTheme.background.ignoresSafeArea()
                 VesperTabBar(selection: $tab)
                     .padding(.bottom, 8)
             }
@@ -157,5 +170,5 @@ struct VesperTabBar: View {
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    .background(Color(light: 0xF7F7F8, dark: 0x111113))
+    .background(TabTheme.background)
 }
