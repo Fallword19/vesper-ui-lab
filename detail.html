@@ -12,7 +12,7 @@
     --muted: #a3a3a3;
     --faint: #cdcdcd;
     --line: #ececec;
-    --chip: #efefef;
+    --chip: #ededed;
     --accent: #e07a5f;
     --card-bg: linear-gradient(180deg, #fdfdfd 0%, #f9f9f9 100%);
     --shadow: 0 14px 34px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.025);
@@ -28,7 +28,7 @@
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
-  button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+  button, a { font: inherit; color: inherit; border: none; background: none; cursor: pointer; text-decoration: none; }
 
   .page {
     max-width: 440px;
@@ -37,20 +37,49 @@
   }
 
   /* 顶栏 */
-  .topbar { position: relative; display: flex; justify-content: center; height: 48px; margin-bottom: 8px; }
+  .topbar { position: relative; display: flex; justify-content: center; height: 48px; }
   .round, .pill { background: #fbfbfb; box-shadow: var(--shadow); }
   .round { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; }
   .topbar .round { position: absolute; left: 0; }
   .pill { height: 48px; padding: 0 24px; border-radius: 24px; line-height: 48px; font-size: 17px; font-weight: 600; letter-spacing: 1px; }
 
+  /* 身份 */
+  .identity { margin: 40px 4px 6px; }
+  .identity .head-row { align-items: flex-start; }
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 10px;
+    font-size: 54px;
+    font-weight: 200;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .who::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .identity .round { width: 40px; height: 40px; color: var(--ink-2); }
+  .model-pick {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    margin-top: 22px;
+    padding: 0 12px 0 16px;
+    border-radius: 18px;
+    background: var(--chip);
+    font-size: 14px;
+  }
+  .model-pick em { font-style: normal; color: var(--muted); }
+  .model-pick svg { color: var(--muted); }
+
   /* 分区标题 */
-  .section-head { display: flex; align-items: center; justify-content: space-between; margin: 34px 0 16px; height: 40px; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin: 36px 0 16px; }
   .section-title { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 500; }
   .section-title::before { content: ""; width: 4px; height: 22px; border-radius: 2px; background: var(--ink); }
-  .section-head .round { width: 40px; height: 40px; color: var(--ink-2); }
 
   /* 卡片 */
   .card {
+    position: relative;
     background: var(--card-bg);
     border: 1px solid rgba(255, 255, 255, 0.95);
     border-radius: 28px;
@@ -64,19 +93,19 @@
   .unit { margin-left: 6px; font-size: 13px; color: var(--muted); letter-spacing: 0; font-weight: 400; }
   .chev { flex: none; color: var(--faint); }
 
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .divider { height: 1px; background: var(--line); margin: 24px 0 20px; }
+  .row-title { font-size: 16px; }
+  .row-sub { margin-top: 4px; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
   /* 开关 */
   .switch { position: relative; flex: none; width: 52px; height: 31px; border-radius: 16px; background: #e4e4e4; transition: background .25s; }
   .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 25px; height: 25px; border-radius: 50%; background: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, .14); transition: transform .25s; }
   .switch[aria-checked="true"] { background: var(--ink); }
   .switch[aria-checked="true"]::after { transform: translateX(21px); }
 
-  /* ---------- 模型 ---------- */
-  .model-name { display: flex; align-items: baseline; gap: 10px; margin-top: 18px; }
-  .model-name .num { font-size: 46px; }
-  .model-name button { display: flex; align-items: center; color: var(--faint); transform: translateY(-4px); }
-
-  .effort { margin-top: 30px; }
-  .slider { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 18px; }
+  /* 思考强度滑杆 */
+  .slider { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 20px; }
   .slider .track, .slider .fill { position: absolute; top: 10px; height: 2px; border-radius: 1px; }
   .slider .track { left: 12.5%; right: 12.5%; background: var(--line); }
   .slider .fill { left: 12.5%; background: var(--ink); transition: width .35s cubic-bezier(.3, .7, .2, 1); }
@@ -88,38 +117,45 @@
   .slider span { font-size: 13px; color: var(--muted); transition: color .2s; }
   .slider button.cur span { color: var(--ink); font-weight: 500; }
 
-  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .divider { height: 1px; background: var(--line); margin: 24px 0 20px; }
-  .row-title { font-size: 16px; }
-  .row-sub { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
-
-  /* ---------- 对话窗口 ---------- */
+  /* 对话窗口 */
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .remain { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 20px; }
-  .remain-main { display: flex; flex-direction: column; }
-  .remain .num { margin-top: 22px; font-size: 60px; }
-  .remain-foot { margin-top: auto; padding-top: 22px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .remain-foot b { font-weight: 500; color: var(--ink-2); }
-
-  .tank { position: relative; flex: none; width: 40px; height: 140px; border-radius: 14px; background: var(--hatch); overflow: hidden; }
-  .tank i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--ink); }
-  .tank::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .03); }
-
-  .stat { display: flex; flex-direction: column; justify-content: space-between; min-height: 132px; }
+  .wide { grid-column: 1 / -1; }
+  .remain-num { display: flex; align-items: baseline; margin: 22px 0 22px; }
+  .remain-num .num { font-size: 60px; }
+  .remain-num em { margin-left: 6px; font-style: normal; font-size: 16px; color: var(--muted); }
+  .bar { position: relative; height: 8px; border-radius: 4px; background: var(--hatch); overflow: hidden; }
+  .bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; background: var(--ink); }
+  .bar-foot { display: flex; justify-content: space-between; margin-top: 12px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .stat { display: flex; flex-direction: column; justify-content: space-between; min-height: 128px; }
   .stat .num { font-size: 44px; }
 
-  /* ---------- 这个人 ---------- */
-  .list { padding: 6px 24px; }
-  .list-row { display: flex; align-items: center; gap: 16px; padding: 18px 0; }
-  .list-row + .list-row { border-top: 1px solid var(--line); }
-  .idx { flex: none; width: 22px; font-size: 13px; font-weight: 300; color: var(--faint); font-variant-numeric: tabular-nums; }
-  .list-body { flex: 1; min-width: 0; }
-  .list-title { font-size: 16px; }
-  .list-sub { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
-  .name { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; }
-  .name::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .link-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 58px;
+    padding: 0 18px 0 24px;
+    border-radius: 29px;
+  }
+  .link-row strong { font-size: 15px; font-weight: 500; }
+  .link-row span { flex: 1; font-size: 13px; color: var(--muted); }
 
-  .stack { display: grid; gap: 14px; }
+  /* 这个人 */
+  .facet { display: flex; flex-direction: column; min-height: 168px; }
+  .facet-title { font-size: 19px; font-weight: 500; }
+  .facet-sub { margin-top: 8px; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+  .facet .go {
+    margin-top: auto;
+    align-self: flex-end;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--chip);
+    display: grid;
+    place-items: center;
+    color: var(--ink-2);
+  }
+  .conflict { margin-top: 14px; }
 </style>
 </head>
 <body>
@@ -132,33 +168,33 @@
     <div class="pill">详情</div>
   </header>
 
-  <!-- 模型 -->
-  <div class="section-head">
-    <h2 class="section-title">模型</h2>
-  </div>
-  <section class="card">
+  <!-- 身份：他是谁、用什么模型 -->
+  <section class="identity">
     <div class="head-row">
-      <span class="label">当前模型</span>
-      <span class="chip">sdk-2</span>
-    </div>
-    <div class="model-name">
-      <span class="num">Opus 4.6</span>
-      <button aria-label="切换模型">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      <span class="label">备注名</span>
+      <button class="round" aria-label="编辑备注名">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
       </button>
     </div>
+    <div class="who">Claude</div>
+    <button class="model-pick">Opus 4.6 <em>sdk-2</em>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </section>
 
-    <div class="effort">
-      <span class="label">思考强度</span>
-      <div class="slider" role="radiogroup" aria-label="思考强度">
-        <span class="track"></span><span class="fill"></span>
-        <button role="radio"><span class="dot"></span><span>低</span></button>
-        <button role="radio"><span class="dot"></span><span>中</span></button>
-        <button role="radio"><span class="dot"></span><span>高</span></button>
-        <button role="radio"><span class="dot"></span><span>Max</span></button>
-      </div>
+  <!-- 思考 -->
+  <div class="section-head">
+    <h2 class="section-title">思考</h2>
+  </div>
+  <section class="card">
+    <span class="label">思考强度</span>
+    <div class="slider" role="radiogroup" aria-label="思考强度">
+      <span class="track"></span><span class="fill"></span>
+      <button role="radio"><span class="dot"></span><span>低</span></button>
+      <button role="radio"><span class="dot"></span><span>中</span></button>
+      <button role="radio"><span class="dot"></span><span>高</span></button>
+      <button role="radio"><span class="dot"></span><span>Max</span></button>
     </div>
-
     <div class="divider"></div>
     <div class="row">
       <div>
@@ -172,18 +208,16 @@
   <!-- 当前对话窗口 -->
   <div class="section-head">
     <h2 class="section-title">当前对话窗口</h2>
-    <button class="round" aria-label="查看对话窗口">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
   </div>
   <div class="grid">
-    <section class="card remain">
-      <div class="remain-main">
+    <section class="card wide">
+      <div class="head-row">
         <span class="label">估算余量</span>
-        <span class="num">86.3k</span>
-        <div class="remain-foot">约 <b>9.7k</b> / 96.0k</div>
+        <span class="chip">已用 10%</span>
       </div>
-      <div class="tank" aria-hidden="true"><i style="height:10.1%"></i></div>
+      <div class="remain-num"><span class="num">86.3k</span><em>/ 96.0k</em></div>
+      <div class="bar"><i style="width:10.1%"></i></div>
+      <div class="bar-foot"><span>已用约 9.7k</span><span>96.0k</span></div>
     </section>
     <section class="card stat">
       <span class="label">对话</span>
@@ -193,57 +227,40 @@
       <span class="label">记录</span>
       <div><span class="num">468</span><span class="unit">条</span></div>
     </section>
+    <a class="card link-row wide">
+      <strong>上下文预算</strong>
+      <span>窗口、记忆、缓存</span>
+      <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
   </div>
 
   <!-- 这个人 -->
   <div class="section-head">
     <h2 class="section-title">这个人</h2>
   </div>
-  <div class="stack">
-    <section class="card list">
-      <div class="list-row">
-        <span class="list-body label" style="font-size:15px;letter-spacing:0">备注名</span>
-        <span class="name">Claude</span>
-      </div>
-    </section>
-
-    <section class="card list">
-      <a class="list-row">
-        <span class="idx">01</span>
-        <span class="list-body">
-          <div class="list-title">人格</div>
-          <div class="list-sub">他是谁、怎么说话、什么偏好</div>
-        </span>
-        <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-      <a class="list-row">
-        <span class="idx">02</span>
-        <span class="list-body">
-          <div class="list-title">内心状态</div>
-          <div class="list-sub">情绪、欲望、心理空间</div>
-        </span>
-        <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-      <a class="list-row">
-        <span class="idx">03</span>
-        <span class="list-body">
-          <div class="list-title">上下文预算</div>
-          <div class="list-sub">窗口、记忆、缓存</div>
-        </span>
-        <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </a>
-    </section>
-
-    <section class="card">
-      <div class="row">
-        <div>
-          <div class="row-title">冲突判定</div>
-          <div class="row-sub">关闭后不再触发情绪冲突指南与防御状态</div>
-        </div>
-        <button class="switch" role="switch" aria-checked="false" aria-label="冲突判定"></button>
-      </div>
-    </section>
+  <div class="grid">
+    <a class="card facet">
+      <span class="label">01</span>
+      <div class="facet-title" style="margin-top:14px">人格</div>
+      <div class="facet-sub">他是谁、怎么说话、<br>什么偏好</div>
+      <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </a>
+    <a class="card facet">
+      <span class="label">02</span>
+      <div class="facet-title" style="margin-top:14px">内心状态</div>
+      <div class="facet-sub">情绪、欲望、<br>心理空间</div>
+      <span class="go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </a>
   </div>
+  <section class="card conflict">
+    <div class="row">
+      <div>
+        <div class="row-title">冲突判定</div>
+        <div class="row-sub">关闭后不再触发情绪冲突指南与防御状态</div>
+      </div>
+      <button class="switch" role="switch" aria-checked="false" aria-label="冲突判定"></button>
+    </div>
+  </section>
 
 </main>
 <script>
