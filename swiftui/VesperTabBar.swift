@@ -2,14 +2,13 @@ import SwiftUI
 
 // MARK: - 底栏主题
 
-/// 首页底栏的配色。取自首页 / 日语页：白卡片、近黑描边、一点橙。
+/// 首页底栏的配色。取自首页 / 日语页：白卡片、近黑细线，不用彩色。
 /// `Color(light:dark:)` 定义在 MujiDetailView.swift。
 enum TabTheme {
     static let surface  = Color(light: 0xFFFFFF, dark: 0x1C1C1E)  // 底栏底色
     static let pill     = Color(light: 0xF2F2F4, dark: 0x2C2C2E)  // 选中胶囊
     static let ink      = Color(light: 0x1C1C1E, dark: 0xF2F2F4)  // 选中图标与文字
     static let idle     = Color(light: 0x9C9CA1, dark: 0x7C7C82)  // 未选中
-    static let accent   = Color(light: 0xE07A5F, dark: 0xE8876D)  // 「• Claude」那颗橙点
 
     static let lineWidth: CGFloat = 1.6   // 图标描边，按 24pt 画布计
     static let iconSize: CGFloat = 26
@@ -18,7 +17,7 @@ enum TabTheme {
 // MARK: - 数据
 
 enum VesperTab: CaseIterable, Identifiable {
-    case home, calendar, play, settings
+    case home, calendar, life, settings
 
     var id: Self { self }
 
@@ -26,7 +25,7 @@ enum VesperTab: CaseIterable, Identifiable {
         switch self {
         case .home:     "首页"
         case .calendar: "日历"
-        case .play:     "娱乐"
+        case .life:     "生活"
         case .settings: "设置"
         }
     }
@@ -34,13 +33,9 @@ enum VesperTab: CaseIterable, Identifiable {
 
 // MARK: - 图标
 
-/// 细线图标。每个图标拆成两层：描边主体，和选中时变橙的一个小部件。
-/// 坐标按 24×24 画布写，绘制时等比缩放。
+/// 纯线条图标，没有填充。坐标按 24×24 画布写，绘制时等比缩放。
 struct TabGlyph: Shape {
-    enum Layer { case outline, accent }
-
     let tab: VesperTab
-    let layer: Layer
 
     func path(in rect: CGRect) -> Path {
         let s = min(rect.width, rect.height) / 24
@@ -53,10 +48,10 @@ struct TabGlyph: Shape {
         }
 
         var path = Path()
-        switch (tab, layer) {
+        switch tab {
 
-        // 首页：屋顶 + 方体，门是橙色
-        case (.home, .outline):
+        // 首页：屋顶 + 方体 + 一扇门
+        case .home:
             path.move(to: p(4.5, 10.4))
             path.addLine(to: p(12, 4.3))
             path.addLine(to: p(19.5, 10.4))
@@ -65,42 +60,51 @@ struct TabGlyph: Shape {
             path.addLine(to: p(6.5, 20))
             path.addQuadCurve(to: p(4.5, 18), control: p(4.5, 20))
             path.closeSubpath()
-        case (.home, .accent):
-            path.addRoundedRect(in: r(10, 13.5, 4, 6.5), cornerSize: CGSize(width: 1.4 * s, height: 1.4 * s))
+            path.move(to: p(10, 20))
+            path.addLine(to: p(10, 15.5))
+            path.addQuadCurve(to: p(11.5, 14), control: p(10, 14))
+            path.addLine(to: p(12.5, 14))
+            path.addQuadCurve(to: p(14, 15.5), control: p(14, 14))
+            path.addLine(to: p(14, 20))
 
-        // 日历：框 + 两个挂钩 + 一条横线，今天是橙点
-        case (.calendar, .outline):
+        // 日历：框 + 两个挂钩 + 一条横线
+        case .calendar:
             path.addRoundedRect(in: r(4, 5.5, 16, 14.5), cornerSize: CGSize(width: 3.5 * s, height: 3.5 * s))
             path.move(to: p(8.5, 3.5));  path.addLine(to: p(8.5, 7.2))
             path.move(to: p(15.5, 3.5)); path.addLine(to: p(15.5, 7.2))
             path.move(to: p(4, 10.2));   path.addLine(to: p(20, 10.2))
-        case (.calendar, .accent):
-            path.addEllipse(in: r(13.9, 13.4, 3.2, 3.2))
 
-        // 娱乐：三个方格 + 一个圆，圆是橙色
-        case (.play, .outline):
-            let corner = CGSize(width: 2.2 * s, height: 2.2 * s)
-            path.addRoundedRect(in: r(4, 4, 7, 7), cornerSize: corner)
-            path.addRoundedRect(in: r(13, 4, 7, 7), cornerSize: corner)
-            path.addRoundedRect(in: r(4, 13, 7, 7), cornerSize: corner)
-        case (.play, .accent):
-            path.addEllipse(in: r(13, 13, 7, 7))
+        // 生活：一只杯子，两缕热气
+        case .life:
+            path.move(to: p(5, 10))
+            path.addLine(to: p(16, 10))
+            path.addLine(to: p(16, 15))
+            path.addQuadCurve(to: p(11.5, 19.5), control: p(16, 19.5))
+            path.addLine(to: p(9.5, 19.5))
+            path.addQuadCurve(to: p(5, 15), control: p(5, 19.5))
+            path.closeSubpath()
+            path.move(to: p(16, 11.5))
+            path.addLine(to: p(17.5, 11.5))
+            path.addQuadCurve(to: p(19.5, 13.5), control: p(19.5, 11.5))
+            path.addQuadCurve(to: p(17.5, 15.5), control: p(19.5, 15.5))
+            path.addLine(to: p(16, 15.5))
+            path.move(to: p(8.5, 4.5));  path.addLine(to: p(8.5, 7))
+            path.move(to: p(12.5, 4.5)); path.addLine(to: p(12.5, 7))
 
-        // 设置：两根滑杆，代替齿轮；下面那颗旋钮是橙色
-        case (.settings, .outline):
-            path.move(to: p(4, 8));     path.addLine(to: p(6.4, 8))
-            path.move(to: p(11.6, 8));  path.addLine(to: p(20, 8))
+        // 设置：两根滑杆，代替齿轮
+        case .settings:
+            path.move(to: p(4, 8));     path.addLine(to: p(6.6, 8))
+            path.move(to: p(11.4, 8));  path.addLine(to: p(20, 8))
             path.addEllipse(in: r(6.6, 5.6, 4.8, 4.8))
-            path.move(to: p(4, 16));    path.addLine(to: p(12.4, 16))
-            path.move(to: p(17.6, 16)); path.addLine(to: p(20, 16))
-        case (.settings, .accent):
+            path.move(to: p(4, 16));    path.addLine(to: p(12.6, 16))
+            path.move(to: p(17.4, 16)); path.addLine(to: p(20, 16))
             path.addEllipse(in: r(12.6, 13.6, 4.8, 4.8))
         }
         return path
     }
 }
 
-/// 一个完整图标。未选中时整只灰色线稿；选中时主体变墨色，小部件填成橙色。
+/// 一个完整图标。未选中灰色，选中变墨色。
 struct TabIcon: View {
     let tab: VesperTab
     let isSelected: Bool
@@ -108,19 +112,9 @@ struct TabIcon: View {
     var body: some View {
         GeometryReader { geo in
             let width = TabTheme.lineWidth * min(geo.size.width, geo.size.height) / 24
-            let style = StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round)
-            ZStack {
-                TabGlyph(tab: tab, layer: .outline)
-                    .stroke(isSelected ? TabTheme.ink : TabTheme.idle, style: style)
-                if isSelected {
-                    TabGlyph(tab: tab, layer: .accent)
-                        .fill(TabTheme.accent)
-                        .transition(.scale(scale: 0.4).combined(with: .opacity))
-                } else {
-                    TabGlyph(tab: tab, layer: .accent)
-                        .stroke(TabTheme.idle, style: style)
-                }
-            }
+            TabGlyph(tab: tab)
+                .stroke(isSelected ? TabTheme.ink : TabTheme.idle,
+                        style: StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round))
         }
         .frame(width: TabTheme.iconSize, height: TabTheme.iconSize)
     }

@@ -26,19 +26,17 @@
   .item.on { background: var(--pill); color: var(--ink); font-weight: 600; }
   .item svg { width: 26px; height: 26px; fill: none; stroke: var(--idle); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .item.on svg { stroke: var(--ink); }
-  .item.on svg .a { fill: var(--accent); stroke: none; }
   .old .item svg { stroke: none; fill: var(--ink); }
   .old .item.on { color: var(--accent); }
   .old .item.on svg { fill: var(--accent); }
   .big { display: flex; gap: 28px; padding: 24px; background: #fff; border-radius: 24px; max-width: 430px; justify-content: center; }
   .big svg { width: 64px; height: 64px; fill: none; stroke: #1C1C1E; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .big svg .a { fill: #E07A5F; stroke: none; }
   ul { font-size: 13px; line-height: 1.8; color: #3A3A3C; padding-left: 18px; max-width: 430px; }
 </style>
 </head>
 <body>
 <h1>首页底栏 · 新图标</h1>
-<p class="lead">细线 1.6pt、圆角端点，和卡片上的细字、条纹进度条一个重量。<br>选中时：浅灰胶囊托起 + 图标变黑 + 一个小部件变成「• Claude」那颗橙色。点一下可以切换。</p>
+<p class="lead">纯线条 1.6pt、圆角端点，没有填充、没有彩色。<br>选中时：浅灰胶囊托起 + 图标和文字变黑。点一下可以切换。</p>
 
 <h2>放大看</h2>
 <div class="big" id="big"></div>
@@ -54,19 +52,19 @@
 
 <h2>改了什么</h2>
 <ul>
-  <li><b>首页</b>：屋顶 + 方体，门是橙色。</li>
-  <li><b>日历</b>：去掉满屏小点，只留一条横线，今天是一颗橙点。</li>
-  <li><b>娱乐</b>：三个方格 + 一个圆，圆是橙色。比四个实心方块轻。</li>
-  <li><b>设置</b>：齿轮换成两根滑杆，像仪器上的旋钮；下面那颗是橙色。</li>
-  <li>选中不再整只染橙，橙色只占一小块，和页面里的用法一致。</li>
+  <li><b>首页</b>：屋顶 + 方体 + 一扇门。</li>
+  <li><b>日历</b>：框 + 两个挂钩 + 一条横线，去掉满屏小点。</li>
+  <li><b>生活</b>（原「娱乐」）：一只杯子，两缕热气。</li>
+  <li><b>设置</b>：齿轮换成两根滑杆。</li>
+  <li>全部只用线条，选中只变黑，不用颜色。</li>
 </ul>
 
 <script>
   const icons = [
-    ['首页', `<path d="M4.5 10.4 12 4.3l7.5 6.1V18q0 2-2 2h-11q-2 0-2-2z"/><rect class="a" x="10" y="13.5" width="4" height="6.5" rx="1.4"/>`],
-    ['日历', `<rect x="4" y="5.5" width="16" height="14.5" rx="3.5"/><path d="M8.5 3.5v3.7M15.5 3.5v3.7M4 10.2h16"/><circle class="a" cx="15.5" cy="15" r="1.6"/>`],
-    ['娱乐', `<rect x="4" y="4" width="7" height="7" rx="2.2"/><rect x="13" y="4" width="7" height="7" rx="2.2"/><rect x="4" y="13" width="7" height="7" rx="2.2"/><circle class="a" cx="16.5" cy="16.5" r="3.5"/>`],
-    ['设置', `<path d="M4 8h2.4M11.6 8H20M4 16h8.4M17.6 16H20"/><circle cx="9" cy="8" r="2.4"/><circle class="a" cx="15" cy="16" r="2.4"/>`],
+    ['首页', `<path d="M4.5 10.4 12 4.3l7.5 6.1V18q0 2-2 2h-11q-2 0-2-2z"/><path d="M10 20v-4.5q0-1.5 1.5-1.5h1q1.5 0 1.5 1.5V20"/>`],
+    ['日历', `<rect x="4" y="5.5" width="16" height="14.5" rx="3.5"/><path d="M8.5 3.5v3.7M15.5 3.5v3.7M4 10.2h16"/>`],
+    ['生活', `<path d="M5 10h11v5q0 4.5-4.5 4.5h-2Q5 19.5 5 15z"/><path d="M16 11.5h1.5q2 0 2 2t-2 2H16M8.5 4.5V7M12.5 4.5V7"/>`],
+    ['设置', `<path d="M4 8h2.6M11.4 8H20M4 16h8.6M17.4 16H20"/><circle cx="9" cy="8" r="2.4"/><circle cx="15" cy="16" r="2.4"/>`],
   ];
   // 旧版：近似 SF Symbols 的实心图标
   const oldIcons = [
@@ -84,7 +82,7 @@
     const render = () => {
       const sel = +bar.dataset.sel;
       bar.innerHTML = icons.map(([t, b], i) =>
-        `<div class="item${i === sel ? ' on' : ''}" data-i="${i}">${svg(old ? oldIcons[i] : b)}<span>${t}</span></div>`
+        `<div class="item${i === sel ? ' on' : ''}" data-i="${i}">${svg(old ? oldIcons[i] : b)}<span>${old && i === 2 ? "娱乐" : t}</span></div>`
       ).join('');
     };
     bar.addEventListener('click', e => {
