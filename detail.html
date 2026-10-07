@@ -147,11 +147,12 @@
     margin: 26px 0 -4px;
     border-top: 1px solid var(--line);
   }
-  .facet { position: relative; min-height: 128px; padding: 18px 16px 16px 0; }
-  .facet + .facet { padding: 18px 0 16px 18px; border-left: 1px solid var(--line); }
-  .facet-head { display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 500; }
-  .facet .go { color: var(--faint); }
-  .facet .art { position: absolute; right: -2px; bottom: 8px; width: 74px; height: 74px; }
+  .facet { position: relative; display: flex; flex-direction: column; min-height: 142px; padding: 18px 16px 18px 0; }
+  .facet + .facet { padding: 18px 0 18px 18px; border-left: 1px solid var(--line); }
+  .facet-tag { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 10.5px; line-height: 1.7; letter-spacing: 1.5px; color: var(--muted); }
+  .facet-head { order: 2; margin-top: auto; display: flex; align-items: center; gap: 6px; font-size: 21px; font-weight: 500; letter-spacing: .5px; }
+  .facet .go { color: var(--faint); transform: translateY(1px); }
+  .facet .art { position: absolute; right: 0; top: 14px; width: 80px; height: 80px; }
   .persona { transform-origin: 37px 37px; animation: unfold 1.1s cubic-bezier(.3, .7, .2, 1) .2s both; }
   @keyframes unfold { from { transform: scale(0) rotate(-30deg); opacity: 0; } }
 
@@ -191,6 +192,7 @@
     <div class="who">Claude</div>
     <div class="facets">
       <a class="facet">
+        <div class="facet-tag">01<br>PERSONA</div>
         <div class="facet-head">人格
           <svg class="go" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
         </div>
@@ -208,6 +210,7 @@
         </svg>
       </a>
       <a class="facet">
+        <div class="facet-tag">02<br>INNER</div>
         <div class="facet-head">内心状态
           <svg class="go" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
         </div>
